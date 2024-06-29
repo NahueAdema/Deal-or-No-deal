@@ -1,0 +1,19 @@
+{% extends 'layout.html' %}
+
+{% block head %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/otherstyle.css') }}" />
+{% endblock %}
+
+{% block main %}
+  <a style="text-decoration: none; color: black; font-size: 2em;" href="http://www.google.com">Google</a>
+
+  <p>{{ parrafo }}</p>
+
+  <div class="images">
+    <img src="{{ url_for('static', filename='img/img01.jpeg')}}" alt="" />
+    <img src="{{ url_for('static', filename='img/img02.jpeg')}}" alt="" />
+    <img src="{{ url_for('static', filename='img/img03.jpeg')}}" alt="" />
+    <!-- -->
+    <img src="{{ url_for('static', filename='img/img04.jpeg')}}" alt="" />
+  </div>
+{% endblock %}

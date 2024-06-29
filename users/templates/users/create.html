@@ -1,0 +1,28 @@
+{% extends 'layout.html' %} {% block main %}
+<h1>Crear Usuario</h1>
+
+<form action="/users/create" method="POST">
+  <div class="mb-3 w-50">
+    <label for="username" class="form-label">Nombre de Usuario</label>
+    <input
+      type="text"
+      class="form-control"
+      name="username"
+      id="username"
+      required
+    />
+  </div>
+  <div class="mb-3 w-50">
+    <label for="password" class="form-label">Contraseña</label>
+    <input
+      type="text"
+      class="form-control"
+      name="password"
+      id="password"
+      required
+    />
+  </div>
+  <button type="submit" class="btn btn-primary">Aceptar</button>
+  <button type="cancel" class="btn btn-danger">Cancelar</button>
+</form>
+{% endblock %}

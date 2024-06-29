@@ -1,0 +1,7 @@
+{% extends 'layout.html' %} {% block main %}
+<h1>Datos del Usuario</h1>
+{{ user }} {% if mensaje %}
+<h2>{{ mensaje }}</h2>
+{% else %}
+<h3>{{ user['id'] }} // {{ user['name'] }}</h3>
+{% endif %} {% endblock %}

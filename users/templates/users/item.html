@@ -1,0 +1,29 @@
+{% extends 'layout.html' %} {% block main %}
+<h1>Datos de los Usuarios</h1>
+<a class="btn btn-success btn-lg" href="/register">Agregar</a>
+<table class="table table-dark table-striped">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Nombre</th>
+      <th scope="col">Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for user in users %}
+    <tr>
+      <td>{{ user['id'] }}</td>
+      <td>{{ user['name'] }}</td>
+      <td>
+        <a class="btn btn-warning btn-sm" href="/users/edit/{{ user.id }}"
+          >Editar</a
+        >
+        <a class="btn btn-danger btn-sm" href="/users/delete/{{ user.id }}"
+          >Borrar</a
+        >
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
