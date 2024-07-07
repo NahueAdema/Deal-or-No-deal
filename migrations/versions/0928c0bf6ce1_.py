@@ -32,13 +32,4 @@ def downgrade():
     sa.Column('password', sa.VARCHAR(length=128), nullable=False),
     sa.PrimaryKeyConstraint('id')
     )
-    op.create_table('tasks',
-    sa.Column('id', sa.INTEGER(), nullable=False),
-    sa.Column('titulo', sa.VARCHAR(length=100), nullable=False),
-    sa.Column('descripcion', sa.VARCHAR(), nullable=True),
-    sa.Column('fechaCreacion', sa.DATETIME(), nullable=False),
-    sa.Column('user_id', sa.INTEGER(), nullable=False),
-    sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
-    sa.PrimaryKeyConstraint('id')
-    )
     # ### end Alembic commands ###
