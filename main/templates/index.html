@@ -1,12 +1,11 @@
-{% extends 'layout.html' %}
-
-{% block main %}
-  <main class="form-signin w-50 m-auto">
-    {% if not current_user.is_authenticated %}
-      <a class="btn btn-success" href="/auth/login">Ingresar</a>
-      <a class="btn btn-primary" href="/auth/register">Registrarse</a>
-    {% else %}
-      <h1 class="h3 mb-3 fw-normal">Bienvenido {{ current_user.fullname }}</h1>
-    {% endif %}
-  </main>
+{% extends 'layout.html' %} {% block main %}
+<main class="form-signin w-50 m-auto">
+  {% if not current_user.is_authenticated %}
+  <a class="btn btn-success" href="/auth/login">Ingresar</a>
+  <a class="btn btn-primary" href="/auth/register">Registrarse</a>
+  <a class="btn btn-primary" href="/game/">Juego</a>
+  {% else %}
+  <h1 class="h3 mb-3 fw-normal">Bienvenido {{ current_user.fullname }}</h1>
+  {% endif %}
+</main>
 {% endblock %}
