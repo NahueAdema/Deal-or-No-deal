@@ -1,0 +1,76 @@
+{% extends 'layout.html' %} {% block main %}
+<h1>Deal or No Deal - Reveal Cases</h1>
+{% if revealed %}
+<h2>Revealed Cases:</h2>
+<ul>
+  {% for case in revealed %}
+  <li>Case {{ case.0 }}: {{ case.1 }}</li>
+  {% endfor %}
+</ul>
+<p><a href="{{ url_for('game_bp.get_offer') }}">Get Offer</a></p>
+{% else %}
+<form id="revealForm" method="post">
+  <div class="row row-cols-3">
+    {% for case in cases %}
+    <div class="col">
+      <button
+        type="button"
+        id="case_{{ case.num }}"
+        class="btn btn-block btn-case {% if case.selected %}btn-warning{% elif case.disabled %}btn-primary{% else %}btn-success{% endif %}"
+        {%
+        if
+        case.disabled
+        or
+        case.selected
+        %}disabled{%
+        endif
+        %}
+      >
+        Case {{ case.num }}
+      </button>
+      <input
+        type="hidden"
+        name="case_nums"
+        value="{{ case.num }}"
+        {%
+        if
+        not
+        case.selected
+        and
+        not
+        case.disabled
+        %}disabled{%
+        endif
+        %}
+      />
+    </div>
+    {% endfor %}
+  </div>
+  <input
+    type="submit"
+    value="Reveal {{ num_to_reveal }} Cases"
+    class="btn btn-primary mt-3"
+  />
+</form>
+{% endif %}
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const form = document.getElementById("revealForm");
+    const buttons = form.querySelectorAll(".btn-case");
+
+    buttons.forEach((button) => {
+      button.addEventListener("click", function () {
+        if (this.hasAttribute("disabled")) return;
+
+        const isChecked = !this.classList.contains("btn-danger");
+        this.classList.toggle("btn-danger", isChecked);
+        this.classList.toggle("btn-success", !isChecked);
+        const hiddenInput = this.nextElementSibling;
+        hiddenInput.disabled = !isChecked;
+      });
+    });
+  });
+</script>
+
+{% endblock %}

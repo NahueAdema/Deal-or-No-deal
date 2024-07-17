@@ -1,5 +1,6 @@
 import random
-CASE_VALS = [1,5,10,15,25,50,75,100,200,300,400,500,750,1000,5000,10000,25000,50000,75000,100000,200000,300000,400000,500000,750000,1000000]
+
+CASE_VALS = [1, 5, 10, 15, 25, 50, 75, 100, 200, 300, 400, 500, 750, 1000, 5000, 10000, 25000, 50000, 75000, 100000, 200000, 300000, 400000, 500000, 750000, 1000000]
 
 class Case:
     def __init__(self, value, num):
@@ -10,35 +11,39 @@ class Case:
     def __str__(self):
         return "[" + str(self.num) + "]"
 
-
 class DealOrNoDeal:
     def __init__(self, case_vals=CASE_VALS):
         self.case_vals = sorted(case_vals)
-        self.vals_left = case_vals
+        self.vals_left = case_vals.copy()  
         random.shuffle(case_vals)
         self.cases = [Case(value, num) for num, value in enumerate(case_vals, 1)]
-        self.__choice_case = None
+        self.chosen_case = None
         self.rounds = [5, 5, 5, 5, 3, 1]
+        self.current_round = 0
         self.offers = []
         self.playing = True
 
     def get_cases(self):
-        return [str(case) for case in self.cases]
+        return [{"num": case.num, "disabled": not case.available, "selected": case == self.chosen_case} for case in self.cases]
 
     def get_values_left(self):
         return self.vals_left
 
     def choose_case(self, num):
-        self.__choice_case = self.cases[num - 1]
+        self.chosen_case = self.cases[num - 1]
         self.cases[num - 1].available = False
 
     def reveal_cases(self, nums):
         revealed = []
         for num in nums:
+            if self.chosen_case and num == self.chosen_case.num:
+                continue  
             case = self.cases[num - 1]
-            case.available = False
-            self.vals_left.remove(case.value)
-            revealed.append((case.num, case.value))
+            if case.value in self.vals_left:
+                case.available = False
+                self.vals_left.remove(case.value)
+                revealed.append((case.num, case.value))
+        self.current_round += 1
         return revealed
 
     def get_dealer_offer(self):
@@ -46,7 +51,7 @@ class DealOrNoDeal:
 
     def get_final_choice(self, keep_original):
         if keep_original:
-            return self.__choice_case
+            return self.chosen_case
         else:
             return [case for case in self.cases if case.available][0]
 
@@ -56,5 +61,7 @@ class DealOrNoDeal:
     def get_offers(self):
         return self.offers
 
-
-game = DealOrNoDeal()
+    def get_num_cases_to_reveal(self):
+        if self.current_round < len(self.rounds):
+            return self.rounds[self.current_round]
+        return 1

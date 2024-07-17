@@ -1,1 +1,19 @@
-<h1>Futura implementacion</h1>
+{% extends 'layout.html' %} {% block main %}
+<h1>Deal or No Deal</h1>
+<form action="{{ url_for('game_bp.choose_case') }}" method="post">
+  <div class="row row-cols-3">
+    {% for case in cases %}
+    <div class="col">
+      <button
+        type="submit"
+        name="case_num"
+        value="{{ case.num }}"
+        class="btn btn-block btn-case {% if case.disabled %}btn-warning{% else %}btn-success{% endif %}"
+      >
+        Case {{ case.num }}
+      </button>
+    </div>
+    {% endfor %}
+  </div>
+</form>
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends 'layout.html' %} {% block main %}
+<h1>Deal or No Deal - Final Result</h1>
+<h2>Congratulations! You won {{ case_value }}!</h2>
+<h2>Your Case Number: {{ case_num }}</h2>
+<h2>Banker's Offers:</h2>
+<ul>
+  {% for offer in offers %}
+  <li>{{ offer }}</li>
+  {% endfor %}
+</ul>
+{% endblock %}
