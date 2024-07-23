@@ -1,5 +1,5 @@
 {% extends 'layout.html' %} {% block main %}
-<h1>Deal or No Deal</h1>
+<h1>Deal or No Deal - Choose Your Case</h1>
 <form action="{{ url_for('game_bp.choose_case') }}" method="post">
   <div class="row row-cols-3">
     {% for case in cases %}
@@ -8,7 +8,13 @@
         type="submit"
         name="case_num"
         value="{{ case.num }}"
-        class="btn btn-block btn-case {% if case.disabled %}btn-warning{% else %}btn-success{% endif %}"
+        class="btn btn-block {% if case.disabled %}btn-secondary{% else %}btn-primary{% endif %}"
+        {%
+        if
+        case.disabled
+        %}disabled{%
+        endif
+        %}
       >
         Case {{ case.num }}
       </button>
@@ -16,4 +22,7 @@
     {% endfor %}
   </div>
 </form>
+<a href="{{ url_for('game_bp.reset_game') }}" class="btn btn-danger mt-3"
+  >Reset Game</a
+>
 {% endblock %}
