@@ -1,5 +1,6 @@
 {% extends 'layout.html' %} {% block main %}
 <h1>Deal or No Deal - Reveal Cases</h1>
+
 {% if revealed %}
 <h2>Revealed Cases:</h2>
 <ul>
@@ -7,70 +8,95 @@
   <li>Case {{ case.0 }}: {{ case.1 }}</li>
   {% endfor %}
 </ul>
-<p><a href="{{ url_for('game_bp.get_offer') }}">Get Offer</a></p>
+<p>
+  <a href="{{ url_for('game_bp.get_offer') }}" class="btn btn-primary"
+    >Get Offer</a
+  >
+</p>
 {% else %}
 <form id="revealForm" method="post">
   <div class="row row-cols-3">
     {% for case in cases %}
     <div class="col">
-      <button
-        type="button"
-        id="case_{{ case.num }}"
-        class="btn btn-block btn-case {% if case.selected %}btn-warning{% elif case.disabled %}btn-primary{% else %}btn-success{% endif %}"
-        {%
-        if
-        case.disabled
-        or
-        case.selected
-        %}disabled{%
-        endif
-        %}
-      >
-        Case {{ case.num }}
-      </button>
-      <input
-        type="hidden"
-        name="case_nums"
-        value="{{ case.num }}"
-        {%
-        if
-        not
-        case.selected
-        and
-        not
-        case.disabled
-        %}disabled{%
-        endif
-        %}
-      />
+      <label>
+        <input
+          type="checkbox"
+          name="case_nums"
+          value="{{ case.num }}"
+          class="case-checkbox"
+          {%
+          if
+          case.disabled
+          %}disabled{%
+          endif
+          %}
+        />
+        <span
+          class="btn btn-block btn-case {% if case.selected %}btn-warning{% elif case.disabled %}btn-primary{% else %}btn-success{% endif %}"
+          >Case {{ case.num }}</span
+        >
+      </label>
     </div>
     {% endfor %}
   </div>
+  <p>Select exactly {{ num_to_reveal }} cases to reveal.</p>
   <input
+    id="revealButton"
     type="submit"
-    value="Reveal {{ num_to_reveal }} Cases"
+    value="Reveal Cases"
     class="btn btn-primary mt-3"
+    disabled
   />
 </form>
 {% endif %}
 
+<form action="{{ url_for('game_bp.reset_game') }}" method="post">
+  <input type="submit" value="Reset Game" class="btn btn-danger mt-3" />
+</form>
+
+<style>
+  input[type="checkbox"] {
+    display: none;
+  }
+
+  .btn-case {
+    display: block;
+    text-align: center;
+    padding: 10px;
+    margin: 5px;
+    cursor: pointer;
+  }
+
+  input[type="checkbox"]:checked + .btn-case {
+    background-color: red;
+    color: white;
+  }
+
+  .btn-case.disabled {
+    background-color: #222;
+    cursor: not-allowed;
+  }
+</style>
+
+{% block script %}
 <script>
   document.addEventListener("DOMContentLoaded", function () {
     const form = document.getElementById("revealForm");
-    const buttons = form.querySelectorAll(".btn-case");
+    const checkboxes = form.querySelectorAll(".case-checkbox");
+    const revealButton = document.getElementById("revealButton");
 
-    buttons.forEach((button) => {
-      button.addEventListener("click", function () {
-        if (this.hasAttribute("disabled")) return;
+    const numToReveal = {{ num_to_reveal|tojson|safe }};
 
-        const isChecked = !this.classList.contains("btn-danger");
-        this.classList.toggle("btn-danger", isChecked);
-        this.classList.toggle("btn-success", !isChecked);
-        const hiddenInput = this.nextElementSibling;
-        hiddenInput.disabled = !isChecked;
-      });
+    function updateButtonState() {
+      const checkedCount = document.querySelectorAll(".case-checkbox:checked").length;
+      revealButton.disabled = checkedCount !== numToReveal;
+    }
+
+    checkboxes.forEach((checkbox) => {
+      checkbox.addEventListener("change", updateButtonState);
     });
+
+    updateButtonState();
   });
 </script>
-
-{% endblock %}
+{% endblock %} {% endblock %}

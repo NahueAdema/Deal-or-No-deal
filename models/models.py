@@ -1,26 +1,39 @@
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Integer, String,func,ForeignKey
+from sqlalchemy import Integer, String,func,ForeignKey,Boolean
 from sqlalchemy.orm import Mapped, mapped_column,relationship
 from typing import List,Optional
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 
-# Clase que me permite interactuar con la Base de Datos
 Base = declarative_base()
 
 class User(UserMixin, Base):
     __tablename__ = 'users'
-    id = mapped_column(Integer, primary_key=True)
-    username: Mapped[str] = mapped_column(String(25))
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    username: Mapped[str] = mapped_column(String(25), unique=True)
     fullname: Mapped[str] = mapped_column(String(80))
-    password : Mapped[str] = mapped_column(String(128))
-    
+    password: Mapped[str] = mapped_column(String(128))
+    game_state: Mapped["GameState"] = relationship("GameState", uselist=False, back_populates="user")
+
     def set_password(self, password_to_hash):
         self.password = generate_password_hash(password_to_hash)
 
     def check_password(self, password_to_hash):
         return check_password_hash(self.password, password_to_hash)
-    
+
+
+class GameState(Base):
+    __tablename__ = 'game_states'
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    user_id: Mapped[int] = mapped_column(Integer, ForeignKey('users.id'))
+    chosen_case: Mapped[Optional[int]] = mapped_column(Integer, nullable=True)
+    current_round: Mapped[int] = mapped_column(Integer, default=0)
+    playing: Mapped[bool] = mapped_column(Boolean, default=True)
+    vals_left: Mapped[str] = mapped_column(String)
+    revealed_cases: Mapped[str] = mapped_column(String)  
+    offers: Mapped[Optional[str]] = mapped_column(String, nullable=True)  
+
+    user: Mapped["User"] = relationship("User", back_populates="game_state")
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField
 from wtforms.validators import DataRequired, Length, EqualTo
