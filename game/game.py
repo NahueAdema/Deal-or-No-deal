@@ -18,14 +18,15 @@ class Case:
 class DealOrNoDeal:
     def __init__(self, case_vals=CASE_VALS):
         self.case_vals = sorted(case_vals)
+        random.shuffle(case_vals)
         self.vals_left = case_vals.copy()
         self.cases = [Case(value, num) for num, value in enumerate(case_vals, 1)]
         self.chosen_case = None
-        self.rounds = [5, 5, 5, 5, 3, 1, 1, 1]
+        self.rounds = [5, 5, 5, 5, 3, 1, 1]
         self.current_round = 0
         self.offers = []
         self.playing = True
-        self.revealed_cases = set()  
+        self.revealed_cases = set()
 
         self.load_state()
 
@@ -67,20 +68,25 @@ class DealOrNoDeal:
         self.chosen_case = self.cases[num - 1]
         self.cases[num - 1].available = False
         self.save_state()
+        self.check_game_end()
 
     def reveal_cases(self, nums):
+        num_to_reveal = self.get_num_cases_to_reveal()
+        print(f"Debug: num_to_reveal: {num_to_reveal}, nums: {nums}, current_round: {self.current_round}")
+        if len(nums) != num_to_reveal:
+            raise ValueError("Número incorrecto de casos seleccionados para revelar")
+
         revealed = []
         for num in nums:
-            if num in self.revealed_cases:
-                continue
-            if self.chosen_case and num == self.chosen_case.num:
-                continue
             case = self.cases[num - 1]
-            if case.value in self.vals_left:
+            if case.available and case.num not in self.revealed_cases:
                 case.available = False
-                self.vals_left.remove(case.value)
+                if case.value in self.vals_left:
+                    self.vals_left.remove(case.value)
                 revealed.append((case.num, case.value))
                 self.revealed_cases.add(num)
+
+        print(f"Debug: revealed cases in this round: {revealed}")
 
         if len(self.vals_left) <= 1:
             self.playing = False
@@ -89,7 +95,9 @@ class DealOrNoDeal:
             self.current_round += 1
 
         self.save_state()
+        self.check_game_end()
         return revealed
+    
 
     def get_dealer_offer(self):
         offer = round((sum(self.vals_left) / len(self.vals_left)) * (random.randrange(75, 86) / 100), 2)

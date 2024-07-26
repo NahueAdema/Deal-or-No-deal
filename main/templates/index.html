@@ -6,6 +6,9 @@
   <a class="btn btn-primary" href="/game/">Juego</a>
   {% else %}
   <h1 class="h3 mb-3 fw-normal">Bienvenido {{ current_user.fullname }}</h1>
+  <form action="{{ url_for('game_bp.reset_game') }}" method="post">
+    <input type="submit" value="Jugar" class="btn btn-danger mt-3" />
+  </form>
   {% endif %}
 </main>
 {% endblock %}

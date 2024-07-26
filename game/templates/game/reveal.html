@@ -31,10 +31,12 @@
           endif
           %}
         />
-        <span
-          class="btn btn-block btn-case {% if case.selected %}btn-warning{% elif case.disabled %}btn-primary{% else %}btn-success{% endif %}"
-          >Case {{ case.num }}</span
+        <div
+          class="maletin {% if case.selected %}selected{% elif case.disabled %}disabled{% else %}available{% endif %}"
         >
+          <i class="fa-solid fa-suitcase"></i>
+          <span class="numero">{{ case.num }}</span>
+        </div>
       </label>
     </div>
     {% endfor %}
@@ -59,22 +61,40 @@
     display: none;
   }
 
-  .btn-case {
-    display: block;
+  .maletin {
+    position: relative;
+    display: inline-block;
+    font-size: 48px;
     text-align: center;
-    padding: 10px;
-    margin: 5px;
     cursor: pointer;
+    padding: 10px;
   }
 
-  input[type="checkbox"]:checked + .btn-case {
-    background-color: red;
-    color: white;
+  .maletin .numero {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 0.5em;
+    color: #1e293b;
+    font-weight: bold;
   }
 
-  .btn-case.disabled {
-    background-color: #222;
+  .maletin.selected {
+    color: #facc15;
+  }
+
+  .maletin.disabled {
+    color: #2563eb;
     cursor: not-allowed;
+  }
+
+  .maletin.available {
+    color: #16a34a;
+  }
+
+  input[type="checkbox"]:checked + .maletin {
+    color: #991b1b;
   }
 </style>
 
@@ -84,19 +104,14 @@
     const form = document.getElementById("revealForm");
     const checkboxes = form.querySelectorAll(".case-checkbox");
     const revealButton = document.getElementById("revealButton");
+    const numToReveal = {{ num_to_reveal }};
 
-    const numToReveal = {{ num_to_reveal|tojson|safe }};
-
-    function updateButtonState() {
-      const checkedCount = document.querySelectorAll(".case-checkbox:checked").length;
-      revealButton.disabled = checkedCount !== numToReveal;
-    }
-
-    checkboxes.forEach((checkbox) => {
-      checkbox.addEventListener("change", updateButtonState);
+    checkboxes.forEach(function (checkbox) {
+      checkbox.addEventListener("change", function () {
+        const selectedCheckboxes = form.querySelectorAll(".case-checkbox:checked");
+        revealButton.disabled = selectedCheckboxes.length !== numToReveal;
+      });
     });
-
-    updateButtonState();
   });
 </script>
 {% endblock %} {% endblock %}
