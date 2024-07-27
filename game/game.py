@@ -4,7 +4,7 @@ import db
 from flask_login import current_user
 from models.models import GameState
 
-CASE_VALS = [1, 5, 10, 15, 25, 50, 75, 100, 200, 300, 400, 500, 750, 1000, 5000, 10000, 25000, 50000, 75000, 100000, 200000, 300000, 400000, 500000, 750000, 1000000]
+CASE_VALS = [0.01, 1, 5, 10, 25, 50, 75, 100, 200, 300, 400, 500, 750, 1000, 5000, 10000, 25000, 50000, 75000, 100000, 200000, 300000, 400000, 500000, 750000, 1000000]
 
 class Case:
     def __init__(self, value, num):
@@ -17,18 +17,19 @@ class Case:
 
 class DealOrNoDeal:
     def __init__(self, case_vals=CASE_VALS):
-        self.case_vals = sorted(case_vals)
-        random.shuffle(case_vals)
-        self.vals_left = case_vals.copy()
-        self.cases = [Case(value, num) for num, value in enumerate(case_vals, 1)]
+        self.initialize_game(case_vals)
+        self.load_state()
+
+    def initialize_game(self, case_vals):
+        self.case_vals = random.sample(case_vals, len(case_vals))
+        self.vals_left = self.case_vals.copy()
+        self.cases = [Case(value, num) for num, value in enumerate(self.case_vals, 1)]
         self.chosen_case = None
         self.rounds = [5, 5, 5, 5, 3, 1, 1]
         self.current_round = 0
         self.offers = []
         self.playing = True
         self.revealed_cases = set()
-
-        self.load_state()
 
     def load_state(self):
         if current_user.is_authenticated:
@@ -37,7 +38,7 @@ class DealOrNoDeal:
                 self.chosen_case = self.cases[game_state.chosen_case - 1] if game_state.chosen_case else None
                 self.current_round = game_state.current_round
                 self.playing = game_state.playing
-                self.vals_left = list(map(int, game_state.vals_left.split(','))) if game_state.vals_left else []
+                self.vals_left = list(map(float, game_state.vals_left.split(','))) if game_state.vals_left else []
                 self.revealed_cases = set(map(int, game_state.revealed_cases.split(','))) if game_state.revealed_cases else set()
                 self.offers = list(map(float, game_state.offers.split(','))) if game_state.offers else []
                 for case in self.cases:
@@ -68,15 +69,16 @@ class DealOrNoDeal:
         self.chosen_case = self.cases[num - 1]
         self.cases[num - 1].available = False
         self.save_state()
-        self.check_game_end()
 
     def reveal_cases(self, nums):
         num_to_reveal = self.get_num_cases_to_reveal()
-        print(f"Debug: num_to_reveal: {num_to_reveal}, nums: {nums}, current_round: {self.current_round}")
         if len(nums) != num_to_reveal:
             raise ValueError("Número incorrecto de casos seleccionados para revelar")
 
         revealed = []
+        # print(f"Valores restantes antes de revelar: {self.vals_left}")
+        # print(f"Maletines a revelar: {nums}")
+
         for num in nums:
             case = self.cases[num - 1]
             if case.available and case.num not in self.revealed_cases:
@@ -86,7 +88,10 @@ class DealOrNoDeal:
                 revealed.append((case.num, case.value))
                 self.revealed_cases.add(num)
 
-        print(f"Debug: revealed cases in this round: {revealed}")
+        # Prints usados para debug JJAJAJAJAJA
+        print(f"Maletines revelados en esta ronda: {revealed}")
+        # print(f"Maletines revelados acumulados: {self.revealed_cases}")
+        print(f"Valores restantes después de revelar: {self.vals_left}")
 
         if len(self.vals_left) <= 1:
             self.playing = False
@@ -97,10 +102,11 @@ class DealOrNoDeal:
         self.save_state()
         self.check_game_end()
         return revealed
-    
 
     def get_dealer_offer(self):
-        offer = round((sum(self.vals_left) / len(self.vals_left)) * (random.randrange(75, 86) / 100), 2)
+        average = sum(self.vals_left) / len(self.vals_left)
+        multiplier = random.uniform(0.5, 0.75)
+        offer = round(average * multiplier, 2)
         self.add_offer(offer)
         return offer
 

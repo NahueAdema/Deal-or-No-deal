@@ -1,28 +1,78 @@
 {% extends 'layout.html' %} {% block main %}
-<h1>Deal or No Deal - Choose Your Case</h1>
-<form action="{{ url_for('game_bp.choose_case') }}" method="post">
-  <div class="row row-cols-3">
-    {% for case in cases %}
-    <div class="col">
-      <button
-        type="submit"
-        name="case_num"
-        value="{{ case.num }}"
-        class="btn btn-block {% if case.disabled %}btn-secondary{% else %}btn-primary{% endif %}"
-        {%
-        if
-        case.disabled
-        %}disabled{%
-        endif
-        %}
-      >
-        Case {{ case.num }}
-      </button>
+<head>
+  <link rel="stylesheet" href="{{ url_for('static', filename='game.css') }}" />
+</head>
+<body
+  style="
+    background: url(/static/img/game.jpg) no-repeat center center;
+    background-size: cover;
+    min-height: 100vh;
+  "
+>
+  <h1 class="title">
+    <span class="title-text">Deal or No Deal - Escoge tu Maletin!</span>
+  </h1>
+  <form action="{{ url_for('game_bp.choose_case') }}" method="post">
+    <div class="cases-container">
+      {% for case in cases %}
+      <div class="col">
+        <label>
+          <input
+            type="radio"
+            name="case_num"
+            value="{{ case.num }}"
+            class="case-radio"
+          />
+          <div
+            class="maletin {% if case.selected %}selected{% elif case.disabled %}disabled{% else %}available{% endif %}"
+          >
+            <i class="fa-solid fa-suitcase"></i>
+            <span class="numero">{{ case.num }}</span>
+          </div>
+        </label>
+      </div>
+      {% endfor %}
     </div>
-    {% endfor %}
-  </div>
-</form>
-<form action="{{ url_for('game_bp.reset_game') }}" method="post">
-  <input type="submit" value="Reset Game" class="btn btn-danger mt-3" />
-</form>
+    <div class="btns1">
+      <input
+        id="chooseButton"
+        type="submit"
+        value="Choose Case"
+        class="botones"
+        disabled
+      />
+      <form action="{{ url_for('game_bp.reset_game') }}" method="post">
+        <input type="submit" value="Reset Game" class="botones" />
+      </form>
+    </div>
+  </form>
+
+  {% block script %}
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const form = document.querySelector(
+        "form[action='{{ url_for('game_bp.choose_case') }}']"
+      );
+      const chooseButton = document.getElementById("chooseButton");
+      const radioButtons = form.querySelectorAll(".case-radio");
+
+      // Función para actualizar el estado del botón
+      function updateButtonState() {
+        const anyChecked = Array.from(radioButtons).some(
+          (radio) => radio.checked
+        );
+        chooseButton.disabled = !anyChecked;
+      }
+
+      // Añadir eventos a los radio buttons
+      radioButtons.forEach(function (radio) {
+        radio.addEventListener("change", updateButtonState);
+      });
+
+      // Inicializar el estado del botón
+      updateButtonState();
+    });
+  </script>
+  {% endblock %}
+</body>
 {% endblock %}

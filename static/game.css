@@ -1,0 +1,231 @@
+input[type="radio"] {
+  display: none;
+}
+input[type="checkbox"] {
+  display: none;
+}
+.title {
+  font-size: 40px;
+  font-weight: bold;
+  color: #fff;
+  text-align: center;
+  margin-top: 20px;
+  position: relative; /* Necesario para el posicionamiento del efecto */
+}
+
+.title-text {
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(3px);
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.cases-container {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 20px;
+  justify-content: center;
+  margin: 20px;
+}
+
+.case-item {
+  display: block;
+  text-align: center;
+}
+
+.maletin {
+  position: relative;
+  display: inline-block;
+  font-size: 60px;
+  text-align: center;
+  cursor: pointer;
+  padding: 10px;
+  transition: color 0.3s;
+}
+
+.maletin .numero {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 0.5em;
+  color: #111;
+  font-weight: bold;
+}
+
+.maletin.selected {
+  color: #facc15;
+}
+
+.maletin.disabled {
+  color: #2563eb;
+  cursor: not-allowed;
+}
+
+.maletin.available {
+  color: #cfcfcf;
+}
+input[type="checkbox"]:checked + .maletin {
+  color: #991b1b;
+}
+input[type="radio"]:checked + .maletin {
+  color: #991b1b;
+}
+.btns1 {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  justify-items: center;
+  align-items: center;
+}
+
+.container-Phone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.container-Phone h2 {
+  font-size: 1.8em;
+  margin-bottom: 20px;
+}
+
+.container-Phone ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.container-Phone li {
+  font-size: 1.2em;
+  margin: 10px 0;
+  color: #fff;
+  background-color: transparent;
+  backdrop-filter: blur(5px);
+  border-bottom: 1px solid #555;
+  padding-bottom: 10px;
+}
+
+.container-Phone .btn {
+  display: inline-block;
+  padding: 10px 20px;
+  font-size: 1.2em;
+  color: #111;
+  background-color: #ffc200;
+  border: none;
+  border-radius: 5px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.container-Phone .btn:hover {
+  background-color: #dcbb5e;
+}
+
+.txtito {
+  color: #fff;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(3px);
+  border-radius: 7px;
+}
+.container-Phone p {
+  margin-top: 20px;
+}
+.botones {
+  padding: 7px 20px;
+  font-size: 1.2em;
+  color: #111;
+  background-color: #ffc200;
+  border: none;
+  border-radius: 5px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.botones:hover {
+  background-color: #dcbb5e;
+}
+
+.botones:disabled,
+.botones[disabled] {
+  background-color: #dcdcdc;
+  color: #a9a9a9;
+  cursor: not-allowed;
+}
+
+.botones:disabled {
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+.oferta {
+  background-color: #ffc200;
+  color: #000;
+  font-size: 32px;
+  font-weight: bold;
+  padding: 15px;
+  border-radius: 10px;
+  text-align: center;
+  margin: 20px auto;
+  width: 500px;
+}
+.boton-deal {
+  background-color: #28a745;
+  color: #fff;
+  font-size: 24px;
+  font-weight: bold;
+  padding: 15px 30px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: center;
+  text-transform: uppercase;
+  margin-right: 10px;
+}
+
+.boton-deal:hover {
+  background-color: #218838;
+}
+
+.boton-deal:active {
+  background-color: #1e7e34;
+}
+
+.boton-no-deal {
+  background-color: #dc3545;
+  color: #fff;
+  font-size: 24px;
+  font-weight: bold;
+  padding: 15px 30px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: center;
+  text-transform: uppercase;
+  margin-left: 10px;
+}
+
+.boton-no-deal:hover {
+  background-color: #c82333;
+}
+
+.boton-no-deal:active {
+  background-color: #bd2130;
+}
+
+.list-offers {
+  background-color: #222;
+  backdrop-filter: blur(2px);
+  color: #ffc200;
+  padding: 10px;
+  border-radius: 10px;
+  width: 300px;
+  margin: 20px;
+  font-size: 20px;
+}
+.list-offers li {
+  list-style: none;
+  padding: 5px 0;
+}

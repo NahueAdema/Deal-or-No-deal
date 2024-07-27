@@ -1,102 +1,80 @@
 {% extends 'layout.html' %} {% block main %}
-<h1>Deal or No Deal - Reveal Cases</h1>
-
-{% if revealed %}
-<h2>Revealed Cases:</h2>
-<ul>
-  {% for case in revealed %}
-  <li>Case {{ case.0 }}: {{ case.1 }}</li>
-  {% endfor %}
-</ul>
-<p>
-  <a href="{{ url_for('game_bp.get_offer') }}" class="btn btn-primary"
-    >Get Offer</a
-  >
-</p>
-{% else %}
-<form id="revealForm" method="post">
-  <div class="row row-cols-3">
-    {% for case in cases %}
-    <div class="col">
-      <label>
-        <input
-          type="checkbox"
-          name="case_nums"
-          value="{{ case.num }}"
-          class="case-checkbox"
-          {%
-          if
-          case.disabled
-          %}disabled{%
-          endif
-          %}
-        />
-        <div
-          class="maletin {% if case.selected %}selected{% elif case.disabled %}disabled{% else %}available{% endif %}"
-        >
-          <i class="fa-solid fa-suitcase"></i>
-          <span class="numero">{{ case.num }}</span>
-        </div>
-      </label>
-    </div>
-    {% endfor %}
+<head>
+  <link rel="stylesheet" href="{{ url_for('static', filename='game.css') }}" />
+</head>
+<body
+  style="
+    background: url(/static/img/game.jpg) no-repeat center center;
+    background-size: cover;
+    min-height: 100vh;
+  "
+>
+  <div class="container-Phone">
+    {% if revealed %}
+    <h1 class="title">
+      <span class="title-text">Deal or No Deal - Maletines revelados!</span>
+    </h1>
+    <img src="/static/img/llamado.png" alt="TE ESTA LLAMANDO LA BANCA!">
+    <h2 class="txtito">El contenido de los maletines revelados son:</h2>
+    <ul>
+      {% for case in revealed %}
+      <li>Maletin {{ case.0 }}: {{ case.1 }}</li>
+      {% endfor %}
+    </ul>
+    <p>
+      <a href="{{ url_for('game_bp.get_offer') }}" class="btn btn-primary"
+        >Get Offer</a
+      >
+    </p>
+    {% else %}
   </div>
-  <p>Select exactly {{ num_to_reveal }} cases to reveal.</p>
-  <input
-    id="revealButton"
-    type="submit"
-    value="Reveal Cases"
-    class="btn btn-primary mt-3"
-    disabled
-  />
-</form>
-{% endif %}
-
-<form action="{{ url_for('game_bp.reset_game') }}" method="post">
-  <input type="submit" value="Reset Game" class="btn btn-danger mt-3" />
-</form>
-
-<style>
-  input[type="checkbox"] {
-    display: none;
-  }
-
-  .maletin {
-    position: relative;
-    display: inline-block;
-    font-size: 48px;
-    text-align: center;
-    cursor: pointer;
-    padding: 10px;
-  }
-
-  .maletin .numero {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 0.5em;
-    color: #1e293b;
-    font-weight: bold;
-  }
-
-  .maletin.selected {
-    color: #facc15;
-  }
-
-  .maletin.disabled {
-    color: #2563eb;
-    cursor: not-allowed;
-  }
-
-  .maletin.available {
-    color: #16a34a;
-  }
-
-  input[type="checkbox"]:checked + .maletin {
-    color: #991b1b;
-  }
-</style>
+  <h1 class="title">
+    <span class="title-text">Deal or No Deal - Escoge Maletines y Revelalos!</span>
+  </h1>
+  <form id="revealForm" method="post">
+    <div class="cases-container">
+      {% for case in cases %}
+      <div class="col">
+        <label>
+          <input
+            type="checkbox"
+            name="case_nums"
+            value="{{ case.num }}"
+            class="case-checkbox"
+            {%
+            if
+            case.disabled
+            %}disabled{%
+            endif
+            %}
+          />
+          <div
+            class="maletin {% if case.selected %}selected{% elif case.disabled %}disabled{% else %}available{% endif %}"
+          >
+            <i class="fa-solid fa-suitcase"></i>
+            <span class="numero">{{ case.num }}</span>
+          </div>
+        </label>
+      </div>
+      {% endfor %}
+    </div>
+    <p class="txtito"">Selecciona exactamente {{ num_to_reveal }} maletines a revelar.</p>
+    <div class="btns1">
+      <input
+        id="revealButton"
+        type="submit"
+        value="Reveal Cases"
+        class="botones"
+        disabled
+      />
+    </form>
+    {% endif %}
+  
+    <form action="{{ url_for('game_bp.reset_game') }}" method="post">
+      <input type="submit" value="Reset Game" class="botones" />
+    </form>
+    </div>
+</body>
 
 {% block script %}
 <script>

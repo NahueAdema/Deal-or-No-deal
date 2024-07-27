@@ -1,29 +1,52 @@
 {% extends 'layout.html' %} {% block main %}
-<h1>Deal or No Deal - Final Result</h1>
-
-{% if offer is not none %}
-<h2>Congratulations! You won {{ offer }} from the banker!</h2>
-<h2>Your Initial Case Number: {{ case_num }}</h2>
-<h2>Value in Your Initial Case: {{ case_value }}</h2>
-{% else %}
-<h2>The game has ended without a final result.</h2>
-<h2>Your Initial Case Number: {{ case_num }}</h2>
-<h2>Value in Your Initial Case: {{ case_value }}</h2>
-{% endif %}
-
-<h2>Banker's Offers:</h2>
-<ul>
-  {% for offer in offers %}
-  <li>{{ offer }}</li>
-  {% endfor %}
-</ul>
-
-<a href="{{ url_for('game_bp.game_index') }}" class="btn btn-primary"
-  >Start New Game</a
+<head>
+  <link rel="stylesheet" href="{{ url_for('static', filename='game.css') }}" />
+</head>
+<body
+  style="
+    background: url(/static/img/game.jpg) no-repeat center center;
+    background-size: cover;
+    min-height: 100vh;
+  "
 >
+  <div class="container-Phone">
+    <h1 class="title">
+      <span class="title-text">Deal or No Deal - Resultado Final</span>
+    </h1>
+    <img src="/static/img/gameover.png" alt="gameover" />
+    {% if offer is not none %}
+    <h2 class="txtito">Felicidades! Le has ganado {{ offer }} a la banca!</h2>
+    <h2 class="txtito">Tu maletin: {{ case_num }}</h2>
+    <h2 class="txtito">Valor de tu maletin: {{ case_value }}</h2>
+    {% else %}
+    <h2 class="txtito">El partido ha terminado y te llevas tu maletin!.</h2>
+    <h2 class="txtito">Tu maletin: {{ case_num }}</h2>
+    <h2 class="txtito">Has ganado: {{ case_value }}</h2>
+    {% endif %}
 
-<form action="{{ url_for('game_bp.reset_game') }}" method="post">
-  <input type="submit" value="Reset Game" class="btn btn-secondary" />
-</form>
+    <h2 class="txtito">Historial de Ofertas de la Banca:</h2>
+    <ul class="list-offers">
+      {% for offer in offers %}
+      <li>{{ offer }}</li>
+      {% endfor %}
+    </ul>
+    <div class="d-flex justify-content-start">
+      <a href="{{ url_for('game_bp.game_index') }}" class="btn btn-primary mr-3"
+        >Empezar nuevo juego</a
+      >
+      <form
+        action="{{ url_for('game_bp.reset_game') }}"
+        method="post"
+        class="mb-0"
+      >
+        <input
+          type="submit"
+          value="Reset Game"
+          class="btn btn-secondary ml-3"
+        />
+      </form>
+    </div>
+  </div>
+</body>
 
 {% endblock %}
