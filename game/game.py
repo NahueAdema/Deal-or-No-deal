@@ -25,7 +25,7 @@ class DealOrNoDeal:
         self.vals_left = self.case_vals.copy()
         self.cases = [Case(value, num) for num, value in enumerate(self.case_vals, 1)]
         self.chosen_case = None
-        self.rounds = [5, 5, 5, 5, 3, 1, 1]
+        self.rounds = [6,5,4,3,2,1,1,1,1,1]
         self.current_round = 0
         self.offers = []
         self.playing = True
@@ -76,8 +76,8 @@ class DealOrNoDeal:
             raise ValueError("Número incorrecto de casos seleccionados para revelar")
 
         revealed = []
-        # print(f"Valores restantes antes de revelar: {self.vals_left}")
-        # print(f"Maletines a revelar: {nums}")
+        print(f"Valores restantes antes de revelar: {self.vals_left}")
+        print(f"Maletines a revelar: {nums}")
 
         for num in nums:
             case = self.cases[num - 1]
@@ -90,7 +90,7 @@ class DealOrNoDeal:
 
         # Prints usados para debug JJAJAJAJAJA
         print(f"Maletines revelados en esta ronda: {revealed}")
-        # print(f"Maletines revelados acumulados: {self.revealed_cases}")
+        print(f"Maletines revelados acumulados: {self.revealed_cases}")
         print(f"Valores restantes después de revelar: {self.vals_left}")
 
         if len(self.vals_left) <= 1:

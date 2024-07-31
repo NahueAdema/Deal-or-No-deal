@@ -23,7 +23,7 @@
     </ul>
     <p>
       <a href="{{ url_for('game_bp.get_offer') }}" class="btn btn-primary"
-        >Get Offer</a
+        >Atender Llamado</a
       >
     </p>
     {% else %}
@@ -63,7 +63,7 @@
       <input
         id="revealButton"
         type="submit"
-        value="Reveal Cases"
+        value="Revelar Maletines"
         class="botones"
         disabled
       />
@@ -71,7 +71,7 @@
     {% endif %}
   
     <form action="{{ url_for('game_bp.reset_game') }}" method="post">
-      <input type="submit" value="Reset Game" class="botones" />
+      <input type="submit" value="Reinciar Juego" class="botones" />
     </form>
     </div>
 </body>
