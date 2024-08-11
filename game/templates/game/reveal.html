@@ -31,6 +31,7 @@
   <h1 class="title">
     <span class="title-text">Deal or No Deal - Escoge Maletines y Revelalos!</span>
   </h1>
+  <p class="txtito" >Selecciona exactamente {{ num_to_reveal }} maletines a revelar.</p>
   <form id="revealForm" method="post">
     <div class="cases-container">
       {% for case in cases %}
@@ -58,7 +59,6 @@
       </div>
       {% endfor %}
     </div>
-    <p class="txtito"">Selecciona exactamente {{ num_to_reveal }} maletines a revelar.</p>
     <div class="btns1">
       <input
         id="revealButton"

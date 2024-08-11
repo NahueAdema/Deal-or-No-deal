@@ -229,3 +229,7 @@ input[type="radio"]:checked + .maletin {
   list-style: none;
   padding: 5px 0;
 }
+.imgCase3 {
+  width: 350px;
+  height: 300px;
+}

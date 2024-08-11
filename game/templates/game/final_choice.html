@@ -1,0 +1,41 @@
+{% extends 'layout.html' %} {% block main %}
+<head>
+  <link rel="stylesheet" href="{{ url_for('static', filename='game.css') }}" />
+</head>
+<body
+  style="
+    background: url(/static/img/game.jpg) no-repeat center center;
+    background-size: cover;
+    min-height: 100vh;
+  "
+>
+  <div class="container-Phone">
+    <h1 class="title">
+      <span class="title-text">Deal or No Deal - Elección Final</span>
+    </h1>
+    <img
+      src="/static/img/Opaaa.png"
+      alt="Maletin interrogatorio"
+      class="imgCase3"
+    />
+    <h2 class="txtito">Ha llegado el momento de tomar una decisión final.</h2>
+    <h2 class="txtito">
+      Su maletín original es: {{ game_instance.chosen_case.num }}
+    </h2>
+    <h2 class="txtito">El último maletín disponible es: {{ last_case_num }}</h2>
+    <h2 class="txtito">Cual de los maletines te hara millonario?</h2>
+    <div class="btns1">
+      <form action="{{ url_for('game_bp.final') }}" method="post">
+        <input type="hidden" name="keep_original" value="True" />
+        <input type="submit" value="Maletin incial" class="botones" />
+      </form>
+
+      <form action="{{ url_for('game_bp.final') }}" method="post">
+        <input type="hidden" name="keep_original" value="False" />
+        <input type="submit" value="Maletin Final" class="botones" />
+      </form>
+    </div>
+  </div>
+</body>
+
+{% endblock %}
