@@ -113,16 +113,31 @@ def reject_offer():
     finally:
         session.close()
 
-@game_bp.route('/final', methods=['GET'])
+@game_bp.route('/final', methods=['GET', 'POST'])
 @login_required
 def final():
     try:
         game_instance = GameInstance()
         case_num = game_instance.chosen_case.num if game_instance.chosen_case else None
-        case_value = game_instance.get_final_case_value() if game_instance.chosen_case else None
         offers = game_instance.get_offers()
-        offer = request.args.get('offer')  
-        return render_template('final.html', case_num=case_num, case_value=case_value, offers=offers, offer=offer)
+        offer = request.args.get('offer')
+
+        if offer: 
+            case_value = game_instance.chosen_case.value if game_instance.chosen_case else None
+            return render_template('final.html', case_num=case_num, case_value=case_value, offers=offers, offer=offer)
+
+        if request.method == 'POST':
+            keep_original = request.form['keep_original'] == 'True'
+            final_case = game_instance.get_final_choice(keep_original)
+            return render_template('final.html', case_num=final_case.num, case_value=final_case.value, offers=offers, offer=offer)
+
+        available_cases = [case for case in game_instance.cases if case.available]
+        if available_cases:
+            last_case_num = available_cases[0].num
+        else:
+            last_case_num = None
+
+        return render_template('final_choice.html', game_instance=game_instance, last_case_num=last_case_num, case_num=case_num, offer=offer)
     except SQLAlchemyError:
         session.rollback()
         flash("Error al cargar el estado final. Inténtalo de nuevo.")
