@@ -1,9 +1,10 @@
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Integer, String,func,ForeignKey,Boolean
+from sqlalchemy import Integer, String,func,ForeignKey,Boolean,DateTime
 from sqlalchemy.orm import Mapped, mapped_column,relationship
 from typing import List,Optional
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
+from datetime import datetime
 
 Base = declarative_base()
 
@@ -32,6 +33,7 @@ class GameState(Base):
     vals_left: Mapped[str] = mapped_column(String)
     revealed_cases: Mapped[str] = mapped_column(String)  
     offers: Mapped[Optional[str]] = mapped_column(String, nullable=True)  
+    saved_at = mapped_column(DateTime, default=datetime.utcnow)
 
     user: Mapped["User"] = relationship("User", back_populates="game_state")
 from flask_wtf import FlaskForm
