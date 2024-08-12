@@ -1,0 +1,42 @@
+{% extends 'layout.html' %} {% block main %}
+<head>
+  <link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}" />
+</head>
+<body
+  style="
+    background: url(/static/img/inicio.jpg) no-repeat center center;
+    background-size: cover;
+    min-height: 100vh;
+  "
+>
+  <main class="form-signin w-50 m-auto">
+    <h1 class="welcome">Historial de Partidas</h1>
+    <img
+      src="/static/img/Volver.png"
+      alt="Maletin interrogatorio"
+      class="volver"
+    />
+    <div class="game-history-container">
+      <ul>
+        {% for game in games %}
+        <li>
+          <p class="txt-play">
+            Partida guardada: {{ game.saved_at.strftime('%Y-%m-%d %H:%M:%S') }}
+          </p>
+          <p class="txt-play">Ronda actual: {{ game.current_round }}</p>
+          <form
+            method="POST"
+            action="{{ url_for('game_bp.resume_game', game_id=game.id) }}"
+          >
+            <button type="submit" class="btn-play">Retomar partida</button>
+          </form>
+        </li>
+        {% endfor %}
+      </ul>
+      <form action="{{ url_for('game_bp.reset_game') }}" method="post">
+        <input type="submit" value="Nueva Partida" class="btn-play" />
+      </form>
+    </div>
+  </main>
+</body>
+{% endblock %}

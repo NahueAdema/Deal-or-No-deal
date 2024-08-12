@@ -58,3 +58,7 @@ main {
   align-items: center;
   gap: 1em;
 }
+.volver {
+  width: 350px;
+  height: 350px;
+}
