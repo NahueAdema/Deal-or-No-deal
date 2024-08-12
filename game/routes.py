@@ -158,3 +158,35 @@ def reset_game():
         return redirect(url_for('game_bp.game_index'))
     finally:
         session.close()
+
+@game_bp.route('/history')
+@login_required
+def game_history():
+    try:
+        games = session.query(GameState).filter_by(user_id=current_user.id).order_by(GameState.saved_at.desc()).all()
+        return render_template('game_history.html', games=games)
+    except SQLAlchemyError:
+        session.rollback()
+        flash("Error al cargar el historial de partidas. Inténtalo de nuevo.")
+        return redirect(url_for('game_bp.game_index'))
+    finally:
+        session.close()
+
+@game_bp.route('/resume/<int:game_id>', methods=['POST'])
+@login_required
+def resume_game(game_id):
+    try:
+        game_instance = GameInstance()
+        game_state = session.query(GameState).filter_by(id=game_id, user_id=current_user.id).first()
+        if game_state:
+            game_instance.load_state()
+            return redirect(url_for('game_bp.reveal_cases')) 
+        else:
+            flash("No se encontró la partida.")
+            return redirect(url_for('game_bp.game_history'))
+    except SQLAlchemyError:
+        session.rollback()
+        flash("Error al retomar la partida. Inténtalo de nuevo.")
+        return redirect(url_for('game_bp.game_history'))
+    finally:
+        session.close()
