@@ -55,21 +55,15 @@
       );
       const chooseButton = document.getElementById("chooseButton");
       const radioButtons = form.querySelectorAll(".case-radio");
-
-      // Función para actualizar el estado del botón
       function updateButtonState() {
         const anyChecked = Array.from(radioButtons).some(
           (radio) => radio.checked
         );
         chooseButton.disabled = !anyChecked;
       }
-
-      // Añadir eventos a los radio buttons
       radioButtons.forEach(function (radio) {
         radio.addEventListener("change", updateButtonState);
       });
-
-      // Inicializar el estado del botón
       updateButtonState();
     });
   </script>

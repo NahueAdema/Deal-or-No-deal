@@ -14,7 +14,7 @@
       <span class="title-text">Deal or No Deal - Oferta de la banca!</span>
     </h1>
     <img src="/static/img/banker.jpg" alt="Banker" />
-    <h2 class="oferta">La oferta de la banca es: {{ offer }}</h2>
+    <h2 class="oferta">La oferta de la banca es: {{ offer }}$</h2>
     <div class="btns1">
       <form action="{{ url_for('game_bp.accept_offer') }}" method="post">
         <input type="submit" value="Aceptar Oferta" class="boton-deal" />

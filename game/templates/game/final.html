@@ -15,20 +15,20 @@
     </h1>
     <img src="/static/img/gameover.png" alt="gameover" />
     {% if offer is not none %}
-    <h2 class="txtito">Felicidades! Le has ganado {{ offer }} a la banca!</h2>
+    <h2 class="txtito">Felicidades! Le has ganado {{ offer }}$ a la banca!</h2>
     <h2 class="txtito">Tu maletin: {{ case_num }}</h2>
-    <h2 class="txtito">Valor de tu maletin: {{ case_value }}</h2>
+    <h2 class="txtito">Valor de tu maletin: {{ case_value }}$</h2>
     {% else %}
 
     <h2 class="txtito">El partido ha terminado y te llevas tu maletin!.</h2>
     <h2 class="txtito">Tu maletin: {{ case_num }}</h2>
-    <h2 class="txtito">Has ganado: {{ case_value }}</h2>
+    <h2 class="txtito">Has ganado: {{ case_value }}$</h2>
     {% endif %}
 
     <h2 class="txtito">Historial de Ofertas de la Banca:</h2>
     <ul class="list-offers">
       {% for offer in offers %}
-      <li>{{ offer }}</li>
+      <li>{{ offer }}$</li>
       {% endfor %}
     </ul>
     <div class="d-flex justify-content-start">

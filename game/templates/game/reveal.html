@@ -18,7 +18,7 @@
     <h2 class="txtito">El contenido de los maletines revelados son:</h2>
     <ul>
       {% for case in revealed %}
-      <li>Maletin {{ case.0 }}: {{ case.1 }}</li>
+      <li>Maletin {{ case.0 }}: {{ case.1 }}$</li>
       {% endfor %}
     </ul>
     <p>
@@ -31,7 +31,7 @@
   <h1 class="title">
     <span class="title-text">Deal or No Deal - Escoge Maletines y Revelalos!</span>
   </h1>
-  <p class="txtito" >Selecciona exactamente {{ num_to_reveal }} maletines a revelar.</p>
+  <p class="selectCases" >Selecciona exactamente {{ num_to_reveal }} maletines a revelar.</p>
   <form id="revealForm" method="post">
     <div class="cases-container">
       {% for case in cases %}

@@ -130,8 +130,14 @@ input[type="radio"]:checked + .maletin {
   backdrop-filter: blur(3px);
   border-radius: 7px;
 }
-.container-Phone p {
-  margin-top: 20px;
+
+.selectCases {
+  color: #fff;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(3px);
+  border-radius: 7px;
+  justify-items: center;
+  text-align: center;
 }
 .botones {
   padding: 7px 20px;
@@ -143,6 +149,8 @@ input[type="radio"]:checked + .maletin {
   text-decoration: none;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  margin-left: 12px;
+  margin-right: 12px;
 }
 
 .botones:hover {
