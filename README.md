@@ -15,9 +15,9 @@
 
 ✔️ ESTILADO ✔️
 
-❌ Futuras implementacion y soluciones de error: ❌
+❌ Futuras implementacion y soluciones de error: ✔️
 ❌ Solucionar error de randomizacion y no se eliminan los maletines
-❌ Agregar lo pedido de ultimo maletin
-❌ Agregar pantalla nueva para ver historial de juegos
+✔️ Agregar lo pedido de ultimo maletin
+✔️ Agregar pantalla nueva para ver historial de juegos
 ❌ agregar poder retomar juegos anteriores
-❗ ESTILADO DE IMPLEMENTACIONES FUTURAS ❗
+✔️ ESTILADO DE IMPLEMENTACIONES FUTURAS ✔️
