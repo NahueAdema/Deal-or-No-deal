@@ -1,4 +1,6 @@
-{% extends 'layout.html' %} {% block main %}
+{% extends 'layout.html' %}
+
+{% block main %}
 <head>
   <link rel="stylesheet" href="{{ url_for('static', filename='game.css') }}" />
 </head>
@@ -16,22 +18,24 @@
     </h1>
     <img src="/static/img/llamado.png" alt="TE ESTA LLAMANDO LA BANCA!">
     <h2 class="txtito">El contenido de los maletines revelados son:</h2>
-    <ul>
-      {% for case in revealed %}
-      <li>Maletin {{ case.0 }}: {{ case.1 }}$</li>
-      {% endfor %}
-    </ul>
+    <table class="maletin-values">
+      <tbody class="body">
+        {% for case in game_instance.get_sorted_case_values() %}
+        <tr class="col">
+          <td class="{{ 'revealed' if case.revealed else 'not-revealed' }}">{{ case.value }}$</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
     <p>
-      <a href="{{ url_for('game_bp.get_offer') }}" class="btn btn-primary"
-        >Atender Llamado</a
-      >
+      <a href="{{ url_for('game_bp.get_offer') }}" class="btn btn-primary">Atender Llamado</a>
     </p>
     {% else %}
   </div>
   <h1 class="title">
     <span class="title-text">Deal or No Deal - Escoge Maletines y Revelalos!</span>
   </h1>
-  <p class="selectCases" >Selecciona exactamente {{ num_to_reveal }} maletines a revelar.</p>
+  <p class="selectCases">Selecciona exactamente {{ num_to_reveal }} maletines a revelar.</p>
   <form id="revealForm" method="post">
     <div class="cases-container">
       {% for case in cases %}
@@ -92,4 +96,5 @@
     });
   });
 </script>
-{% endblock %} {% endblock %}
+{% endblock %}
+{% endblock %}

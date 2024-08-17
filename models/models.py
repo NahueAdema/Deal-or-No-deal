@@ -28,6 +28,7 @@ class GameState(Base):
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     user_id: Mapped[int] = mapped_column(Integer, ForeignKey('users.id'))
     chosen_case: Mapped[Optional[int]] = mapped_column(Integer, nullable=True)
+    cases: Mapped[str] = mapped_column(String)
     current_round: Mapped[int] = mapped_column(Integer, default=0)
     playing: Mapped[bool] = mapped_column(Boolean, default=True)
     vals_left: Mapped[str] = mapped_column(String)

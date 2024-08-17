@@ -55,6 +55,7 @@ input[type="checkbox"] {
 
 .maletin.selected {
   color: #facc15;
+  background-color: #218838;
 }
 
 .maletin.disabled {
@@ -224,14 +225,14 @@ input[type="radio"]:checked + .maletin {
 }
 
 .list-offers {
-  background-color: #222;
-  backdrop-filter: blur(2px);
-  color: #ffc200;
-  padding: 10px;
+  color: #000;
+  font-size: 32px;
+  font-weight: bold;
+  padding: 15px;
   border-radius: 10px;
-  width: 300px;
-  margin: 20px;
-  font-size: 20px;
+  text-align: center;
+  margin: 20px auto;
+  width: 500px;
 }
 .list-offers li {
   list-style: none;
@@ -240,4 +241,41 @@ input[type="radio"]:checked + .maletin {
 .imgCase3 {
   width: 350px;
   height: 300px;
+}
+
+.maletin-values {
+  background-color: #222;
+  backdrop-filter: blur(2px);
+  padding: 10px;
+  font-weight: bold;
+  border-radius: 10px;
+  text-align: center;
+  width: 150px;
+  font-size: 20px;
+  border-collapse: collapse;
+}
+
+.maletin-values-left,
+.maletin-values-right {
+  flex: 1;
+}
+
+.maletin-values th {
+  background-color: #cccccc;
+  text-align: center;
+  padding: 5px;
+}
+
+.maletin-values td {
+  text-align: center;
+  padding: 5px;
+  border: 1px solid black;
+}
+
+.maletin-values td.revealed {
+  background-color: #888888; /* Gris */
+}
+
+.maletin-values td.not-revealed {
+  background-color: #ffc200; /* Amarillo */
 }

@@ -25,7 +25,7 @@ class DealOrNoDeal:
         self.vals_left = self.case_vals.copy()
         self.cases = [Case(value, num) for num, value in enumerate(self.case_vals, 1)]
         self.chosen_case = None
-        self.rounds = [6,5,4,3,2,1,1,1,1]
+        self.rounds = [6, 5, 4, 3, 2, 1, 1, 1, 1]
         self.current_round = 0
         self.offers = []
         self.playing = True
@@ -41,6 +41,8 @@ class DealOrNoDeal:
                 self.vals_left = list(map(float, game_state.vals_left.split(','))) if game_state.vals_left else []
                 self.revealed_cases = set(map(int, game_state.revealed_cases.split(','))) if game_state.revealed_cases else set()
                 self.offers = list(map(float, game_state.offers.split(','))) if game_state.offers else []
+                cases_str = game_state.cases
+                self.cases = [Case(float(value), num) for num, value in enumerate(cases_str.split(','), 1)]
                 for case in self.cases:
                     if case.num == (self.chosen_case.num if self.chosen_case else None) or case.num in self.revealed_cases:
                         case.available = False
@@ -56,6 +58,7 @@ class DealOrNoDeal:
             game_state.vals_left = ','.join(map(str, self.vals_left))
             game_state.revealed_cases = ','.join(map(str, self.revealed_cases))
             game_state.offers = ','.join(map(str, self.offers))
+            game_state.cases = ','.join(map(str, [case.value for case in self.cases]))
             db.session.add(game_state)
             db.session.commit()
 
@@ -85,6 +88,7 @@ class DealOrNoDeal:
                     self.vals_left.remove(case.value)
                 revealed.append((case.num, case.value))
                 self.revealed_cases.add(num)
+
         if len(self.vals_left) == 2 and len(self.revealed_cases) == len(self.cases) - 1:
             self.playing = False
 
@@ -96,17 +100,28 @@ class DealOrNoDeal:
         return revealed
 
     def get_dealer_offer(self):
+        if len(self.vals_left) == 0:
+            return 0
+
         average = sum(self.vals_left) / len(self.vals_left)
-        multiplier = random.uniform(0.5, 0.75)
-        offer = round(average * multiplier, 2)
+        multiplier = random.uniform(0.6, 0.85)  
+        bonus = (25 - len(self.vals_left)) * 0.1 * average
+        offer = round(average * multiplier + bonus, 2)
+        min_offer = 100 
+        offer = max(offer, min_offer)
         self.add_offer(offer)
         return offer
+
 
     def get_final_choice(self, keep_original):
         if keep_original:
             return self.chosen_case
         else:
-            return [case for case in self.cases if case.available][0]
+            available_cases = [case for case in self.cases if case.available]
+            if available_cases:
+                return available_cases[0]
+            else:
+                raise ValueError("No available cases left!")
 
     def add_offer(self, offer):
         self.offers.append(offer)
@@ -133,12 +148,14 @@ class DealOrNoDeal:
         if self.chosen_case:
             return self.chosen_case.value
         return None
-    def get_final_choice(self, keep_original):
-        if keep_original:
-            return self.chosen_case
-        else:
-            available_cases = [case for case in self.cases if case.available]
-            if available_cases:
-                return available_cases[0]
-            else:
-                raise ValueError("No available cases left!")
+
+    def get_sorted_case_values(self):
+        sorted_cases = sorted(self.cases, key=lambda case: case.value)
+        case_values = []
+        for case in sorted_cases:
+            case_values.append({
+                "num": case.num,
+                "value": case.value,
+                "revealed": case.num in self.revealed_cases
+            })
+        return case_values

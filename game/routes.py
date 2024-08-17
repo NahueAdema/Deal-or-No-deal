@@ -53,12 +53,12 @@ def reveal_cases():
             if not game_instance.playing:
                 return redirect(url_for('game_bp.final'))
             
-            return render_template('reveal.html', revealed=revealed, num_to_reveal=num_to_reveal, cases=game_instance.get_cases())
+            return render_template('reveal.html', revealed=revealed, num_to_reveal=num_to_reveal, cases=game_instance.get_cases(), game_instance=game_instance)
         
         else:
             num_to_reveal = game_instance.get_num_cases_to_reveal()
             cases = game_instance.get_cases()
-            return render_template('reveal.html', num_to_reveal=num_to_reveal, cases=cases)
+            return render_template('reveal.html', num_to_reveal=num_to_reveal, cases=cases, game_instance=game_instance)
     except SQLAlchemyError:
         session.rollback()
         flash("Error al revelar los casos. Inténtalo de nuevo.")
