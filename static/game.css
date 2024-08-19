@@ -59,7 +59,7 @@ input[type="checkbox"] {
 }
 
 .maletin.disabled {
-  color: #2563eb;
+  color: #facc15;
   cursor: not-allowed;
 }
 
