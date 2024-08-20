@@ -78,10 +78,10 @@ input[type="radio"]:checked + .maletin {
   justify-content: space-around;
   justify-items: center;
   align-items: center;
+  margin: 20px;
 }
 
 .container-Phone {
-  display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
@@ -273,9 +273,62 @@ input[type="radio"]:checked + .maletin {
 }
 
 .maletin-values td.revealed {
-  background-color: #888888; /* Gris */
+  background-color: #888888; 
 }
 
 .maletin-values td.not-revealed {
-  background-color: #ffc200; /* Amarillo */
+  background-color: #ffc200; 
+}
+
+.table-container {
+  display: flex;
+  justify-content: flex-end; 
+  gap: 20px;
+  margin: 20px;
+  margin-left: 150px;
+  padding: 1em;
+}
+
+.table-left, .table-right {
+  width: 45%;
+  min-width: 200px; 
+}
+
+.table-left table, .table-right table {
+  width: 100%;
+  border-collapse: collapse; 
+}
+
+.table-left td, .table-right td {
+  text-align: center;
+  padding: 10px;
+}
+
+.table-left td {
+  background-color: #ffc200; 
+  color: #000; 
+}
+
+.table-right td {
+  background-color: #888888;
+  color: white;
+}
+
+.table-left table, .table-right table {
+  width: 535px;
+}
+
+
+h3 {
+  display: flex;
+  color: white;
+  background-color: #222;
+  backdrop-filter: blur(2px);
+  text-align: center;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  padding: 1em;
+  width: 535px;
+  border-radius: 4%;
 }
