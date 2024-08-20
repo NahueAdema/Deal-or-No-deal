@@ -54,12 +54,12 @@ input[type="checkbox"] {
 }
 
 .maletin.selected {
-  color: #facc15;
+  color: yellow;
   background-color: #218838;
 }
 
 .maletin.disabled {
-  color: #2563eb;
+  color: #154afa;
   cursor: not-allowed;
 }
 
